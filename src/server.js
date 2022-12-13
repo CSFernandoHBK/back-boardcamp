@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/customers", async (req, res) => {
-    const customers = await connection.query("SELECT * FROM customers");
+    const customers = await connection.query("SELECT * FROM customers;");
     console.log(customers);
     return res.send(customers.rows);
 });
@@ -36,6 +36,11 @@ app.post("/categories", async (req, res) => {
   }
 
   return res.send(categorie);
+})
+
+app.get("/games", async (req, res) => {
+  const games = await connection.query("SELECT * FROM games;");
+  return res.send(games);
 })
 
 const port = process.env.PORT;
