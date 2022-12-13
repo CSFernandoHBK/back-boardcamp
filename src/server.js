@@ -11,8 +11,31 @@ const connection = new Pool({
 const app = express();
 app.use(express.json());
 
-app.get("/teste", async (req, res) => {
-    return res.send();
+app.get("/customers", async (req, res) => {
+    const customers = await connection.query("SELECT * FROM customers");
+    console.log(customers);
+    return res.send(customers.rows);
+});
+
+app.get("/categories", async (req, res) => {
+  const categories = await connection.query("SELECT * FROM categories ");
+  return res.send(categories);
+})
+
+app.post("/categories", async (req, res) => {
+  const categorie = req.body;
+
+  try{
+    await connection.query(
+      `INSERT INTO categories (name) VALUE (${categorie});`
+    )
+    res.sendStatus(201);
+  } catch(err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+
+  return res.send(categorie);
 })
 
 const port = process.env.PORT;
